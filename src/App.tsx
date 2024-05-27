@@ -17,6 +17,9 @@ import { UserContextProvider } from './components/context/UserContext';
 import User from './components/context/User';
 import MutableRef from './components/ref/MutableRef';
 import DomRef from './components/ref/DomRef';
+import React, { useState, useCallback } from 'react';
+import Item from './components/Callback/Item';
+
 
 function App() {
   const PersonName = {
@@ -37,6 +40,13 @@ function App() {
       last: "ja2"
     }
   ]
+  const [count, setCount] = useState(0);
+  const [items, setItems] = useState<string[]>(['Item 1', 'Item 2', 'Item 3']);
+
+  // useCallback to memoize the handleItemClick function
+  const handleItemClick = useCallback((item: string) => {
+    console.log(`You clicked on ${item}`);
+  }, []);
   return (
     <div className="App">
 
@@ -56,7 +66,7 @@ function App() {
       <Input value='' handleChange={(event)=>alert(event)}/> */}
       {/* END PROPS */}
 
-      {/* IT IS EXAPME OF USE REDUCER JUST UNCOMMENT IT */}
+      {/* IT IS EXAMPLE OF USE REDUCER JUST UNCOMMENT IT */}
       {/* <User />
       <Counter /> */}
       {/* END USE REDUCER */}
@@ -74,9 +84,16 @@ function App() {
       {/* END USE CONTEXT */}
 
       {/* START USE REF */}
-      <MutableRef />
-      <DomRef />
+      {/* <MutableRef />
+      <DomRef /> */}
       {/* END USE REF */}
+      <h1>Counter: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <ul>
+        {items.map(item => (
+          <Item key={item} item={item} onClick={handleItemClick} />
+        ))}
+      </ul>
     </div>
   );
 }
